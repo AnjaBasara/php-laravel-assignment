@@ -8,6 +8,7 @@ use App\Models\Writer;
 use App\Services\BookService;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\View\View;
 
 class BookController extends Controller
 {
@@ -27,7 +28,7 @@ class BookController extends Controller
     /**
      * Show the form for creating a new book.
      *
-     * @return \Illuminate\View\View
+     * @return View
      */
     public function create()
     {
@@ -40,7 +41,7 @@ class BookController extends Controller
     /**
      * Store a newly created book in the database.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param Request $request
      * @return RedirectResponse
      */
     public function store(Request $request)
@@ -76,8 +77,8 @@ class BookController extends Controller
     /**
      * Show the form for editing the specified book.
      *
-     * @param  \App\Models\Book  $book
-     * @return \Illuminate\View\View
+     * @param Book $book
+     * @return View
      */
     public function edit(Book $book)
     {
@@ -90,8 +91,8 @@ class BookController extends Controller
     /**
      * Update the specified book in the database.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\Book  $book
+     * @param Request $request
+     * @param Book $book
      * @return RedirectResponse
      */
     public function update(Request $request, Book $book)
@@ -127,8 +128,8 @@ class BookController extends Controller
     /**
      * Reorder the books.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\Book  $book
+     * @param Request $request
+     * @param Book $book
      *
      * @return RedirectResponse
      */

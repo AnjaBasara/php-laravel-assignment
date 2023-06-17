@@ -3,7 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Models\Publisher;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\View\View;
 
 class PublisherController extends Controller
 {
@@ -16,7 +18,7 @@ class PublisherController extends Controller
     /**
      * Show the form for creating a new publisher.
      *
-     * @return \Illuminate\View\View
+     * @return View
      */
     public function create()
     {
@@ -26,8 +28,8 @@ class PublisherController extends Controller
     /**
      * Store a newly created publisher in the database.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\RedirectResponse
+     * @param Request $request
+     * @return RedirectResponse
      */
     public function store(Request $request)
     {
@@ -47,8 +49,8 @@ class PublisherController extends Controller
     /**
      * Show the form for editing the specified publisher.
      *
-     * @param  \App\Models\Publisher  $publisher
-     * @return \Illuminate\View\View
+     * @param Publisher $publisher
+     * @return View
      */
     public function edit(Publisher $publisher)
     {
@@ -58,9 +60,9 @@ class PublisherController extends Controller
     /**
      * Update the specified publisher in the database.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\Publisher  $publisher
-     * @return \Illuminate\Http\RedirectResponse
+     * @param Request $request
+     * @param Publisher $publisher
+     * @return RedirectResponse
      */
     public function update(Request $request, Publisher $publisher)
     {

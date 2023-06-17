@@ -1,5 +1,8 @@
 <?php
 
+use App\Http\Controllers\BookController;
+use App\Http\Controllers\PublisherController;
+use App\Http\Controllers\WriterController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -18,21 +21,21 @@ Route::get('/', function () {
 });
 
 
-Route::get('/publishers', [\App\Http\Controllers\PublisherController::class, 'index'])->name('publishers.index');
-Route::get('/publishers/create', [\App\Http\Controllers\PublisherController::class, 'create'])->name('publishers.create');
-Route::post('/publishers', [\App\Http\Controllers\PublisherController::class, 'store'])->name('publishers.store');
-Route::get('/publishers/{publisher}/edit', [\App\Http\Controllers\PublisherController::class, 'edit'])->name('publishers.edit');
-Route::put('/publishers/{publisher}', [\App\Http\Controllers\PublisherController::class, 'update'])->name('publishers.update');
+Route::get('/publishers', [PublisherController::class, 'index'])->name('publishers.index');
+Route::get('/publishers/create', [PublisherController::class, 'create'])->name('publishers.create');
+Route::post('/publishers', [PublisherController::class, 'store'])->name('publishers.store');
+Route::get('/publishers/{publisher}/edit', [PublisherController::class, 'edit'])->name('publishers.edit');
+Route::put('/publishers/{publisher}', [PublisherController::class, 'update'])->name('publishers.update');
 
-Route::get('/writers', [\App\Http\Controllers\WriterController::class, 'index'])->name('writers.index');
-Route::get('/writers/create', [\App\Http\Controllers\WriterController::class, 'create'])->name('writers.create');
-Route::post('/writers', [\App\Http\Controllers\WriterController::class, 'store'])->name('writers.store');
-Route::get('/writers/{writer}/edit', [\App\Http\Controllers\WriterController::class, 'edit'])->name('writers.edit');
-Route::put('/writers/{writer}', [\App\Http\Controllers\WriterController::class, 'update'])->name('writers.update');
+Route::get('/writers', [WriterController::class, 'index'])->name('writers.index');
+Route::get('/writers/create', [WriterController::class, 'create'])->name('writers.create');
+Route::post('/writers', [WriterController::class, 'store'])->name('writers.store');
+Route::get('/writers/{writer}/edit', [WriterController::class, 'edit'])->name('writers.edit');
+Route::put('/writers/{writer}', [WriterController::class, 'update'])->name('writers.update');
 
-Route::get('/books', [\App\Http\Controllers\BookController::class, 'index'])->name('books.index');
-Route::get('/books/create', [\App\Http\Controllers\BookController::class, 'create'])->name('books.create');
-Route::post('/books', [\App\Http\Controllers\BookController::class, 'store'])->name('books.store');
-Route::get('/books/{book}/edit', [\App\Http\Controllers\BookController::class, 'edit'])->name('books.edit');
-Route::put('/books/{book}', [\App\Http\Controllers\BookController::class, 'update'])->name('books.update');
-Route::post('/books/{book}/reorder', [\App\Http\Controllers\BookController::class, 'reOrder'])->name('books.reorder');
+Route::get('/books', [BookController::class, 'index'])->name('books.index');
+Route::get('/books/create', [BookController::class, 'create'])->name('books.create');
+Route::post('/books', [BookController::class, 'store'])->name('books.store');
+Route::get('/books/{book}/edit', [BookController::class, 'edit'])->name('books.edit');
+Route::put('/books/{book}', [BookController::class, 'update'])->name('books.update');
+Route::post('/books/{book}/reorder', [BookController::class, 'reOrder'])->name('books.reorder');
