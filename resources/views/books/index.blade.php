@@ -34,7 +34,7 @@
                         <td>{{ $book->publisher->name }}</td>
                         <td>
                             <a href="{{ route('books.edit', $book->id) }}" class="btn btn-sm btn-primary">Edit</a>
-                            <form action="{{ route('books.reOrder', $book) }}" method="POST" style="display: inline">
+                            <form action="{{ route('books.reorder', $book) }}" method="POST" style="display: inline">
                                 @csrf
                                 <input type="number" name="up" placeholder="Up">
                                 <input type="number" name="down" placeholder="Down">
@@ -45,5 +45,15 @@
                 @endforeach
             </tbody>
         </table>
+
+        @if ($errors->any())
+            <div class="alert alert-danger">
+                <ul>
+                    @foreach ($errors->all() as $error)
+                        <li>{{ $error }}</li>
+                    @endforeach
+                </ul>
+            </div>
+        @endif
     </div>
 @endsection

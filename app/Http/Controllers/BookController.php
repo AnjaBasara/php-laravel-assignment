@@ -5,10 +5,17 @@ namespace App\Http\Controllers;
 use App\Models\Book;
 use App\Models\Publisher;
 use App\Models\Writer;
+use App\Services\BookService;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 
 class BookController extends Controller
 {
+
+    public function __construct(public BookService $bookService)
+    {
+    }
+
     public function index()
     {
         $books = Book::all()->sortBy(function (Book $book) {
@@ -34,7 +41,7 @@ class BookController extends Controller
      * Store a newly created book in the database.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\RedirectResponse
+     * @return RedirectResponse
      */
     public function store(Request $request)
     {
@@ -85,7 +92,7 @@ class BookController extends Controller
      *
      * @param  \Illuminate\Http\Request  $request
      * @param  \App\Models\Book  $book
-     * @return \Illuminate\Http\RedirectResponse
+     * @return RedirectResponse
      */
     public function update(Request $request, Book $book)
     {
@@ -123,11 +130,30 @@ class BookController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @param  \App\Models\Book  $book
      *
-     * @return \Illuminate\Http\RedirectResponse
+     * @return RedirectResponse
      */
-    public function reOrder(Request $request, Book $book)
+    public function reorder(Request $request, Book $book): RedirectResponse
     {
-        throw new \Exception('Not implemented yet');
+        if ($book->stock_amount === 0) {
+            return back();
+        }
+
+        if ($request->input('up') && $request->input('down')) {
+            return back();
+        }
+
+        $request->validate([
+            'up' => 'nullable|integer|min:0',
+            'down' => 'nullable|integer|min:0',
+        ]);
+
+        if ($request->input('up')) {
+            $moveCount = (int) $request->input('up');
+        } else {
+            $moveCount = -1 * ((int) $request->input('down'));
+        }
+
+        $this->bookService->reorderBooks($book, $moveCount);
 
         return redirect()->route('books.index');
     }
