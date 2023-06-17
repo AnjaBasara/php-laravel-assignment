@@ -11,7 +11,9 @@ class BookController extends Controller
 {
     public function index()
     {
-        $books = Book::all();
+        $books = Book::all()->sortBy(function (Book $book) {
+            return $book->sort_order > 0 ? $book->sort_order : PHP_INT_MAX;
+        })->values()->all();
         return view('books.index', compact('books'));
     }
 
