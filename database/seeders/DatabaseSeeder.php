@@ -16,17 +16,28 @@ class DatabaseSeeder extends Seeder
      *
      * @return void
      */
-    public function run()
+    public function run(): void
     {
         $publishers = Publisher::factory()->count(5)->create();
 
         $writers = Writer::factory()->count(5)->create();
 
-        for ($i = 0; $i < 20; $i++) {
+        for ($i = 1; $i <= 12; $i++) {
             Book::factory()
                 ->for($publishers->random())
                 ->for($writers->random())
-                ->create();
+                ->create([
+                    'sort_order' => $i,
+                ]);
+        }
+
+        for ($i = 1; $i <= 8; $i++) {
+            Book::factory()
+                ->for($publishers->random())
+                ->for($writers->random())
+                ->create([
+                    'stock_amount' => 0,
+                ]);
         }
     }
 }
