@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\MoveBookRequest;
 use App\Http\Requests\StoreBookRequest;
 use App\Http\Requests\UpdateBookRequest;
 use App\Models\Book;
@@ -9,7 +10,6 @@ use App\Models\Publisher;
 use App\Models\Writer;
 use App\Services\BookService;
 use Illuminate\Http\RedirectResponse;
-use Illuminate\Http\Request;
 use Illuminate\View\View;
 
 class BookController extends Controller
@@ -86,33 +86,18 @@ class BookController extends Controller
     /**
      * Reorder the books.
      *
-     * @param Request $request
+     * @param MoveBookRequest $request
      * @param Book $book
      *
      * @return RedirectResponse
      */
-    public function reorder(Request $request, Book $book): RedirectResponse
+    public function move(MoveBookRequest $request, Book $book): RedirectResponse
     {
         if ($book->stock_amount === 0) {
             return back();
         }
 
-        if ($request->input('up') && $request->input('down')) {
-            return back();
-        }
-
-        $request->validate([
-            'up' => 'nullable|integer|min:0',
-            'down' => 'nullable|integer|min:0',
-        ]);
-
-        if ($request->input('up')) {
-            $moveCount = (int) $request->input('up');
-        } else {
-            $moveCount = -1 * ((int) $request->input('down'));
-        }
-
-        $this->bookService->reorderBooks($book, $moveCount);
+        $this->bookService->moveAndReorderBooks($request, $book);
 
         return redirect()->route('books.index');
     }

@@ -2,6 +2,7 @@
 
 namespace App\Services;
 
+use App\Http\Requests\MoveBookRequest;
 use App\Http\Requests\StoreBookRequest;
 use App\Http\Requests\UpdateBookRequest;
 use App\Models\Book;
@@ -22,12 +23,22 @@ class BookService
     }
 
     /**
+     * Move Book logic.
+     * Book should be moved as many places as indicated,
+     * while other books need to be reordered.
+     *
+     * @param MoveBookRequest $request
      * @param Book $movedBook
-     * @param int $moveCount how many places the Book needs to be moved
      * @return void
      */
-    public function reorderBooks(Book $movedBook, int $moveCount): void
+    public function moveAndReorderBooks(MoveBookRequest $request, Book $movedBook): void
     {
+        if ($request->up) {
+            $moveCount = (int) $request->up;
+        } else {
+            $moveCount = -1 * ((int) $request->down);
+        }
+
         if ($moveCount === 0) {
             return;
         }
