@@ -20,6 +20,10 @@ class BookService
         $oldPlacement = $movedBook->sort_order;
         $newPlacement = $oldPlacement - $moveCount;
 
+        if ($newPlacement < 1) {
+            $newPlacement = 1;
+        }
+
         $arrayBetween = [$newPlacement, $oldPlacement];
         asort($arrayBetween);
 
@@ -28,7 +32,7 @@ class BookService
 
         foreach ($books as $book) {
             if ($book->id === $movedBook->id) {
-                $book->sort_order = $newPlacement;
+                $book->sort_order = (count($books) > $newPlacement) ? $newPlacement : ($oldPlacement + count($books) - 1);
             } else {
                 $book->sort_order += ($moveCount > 0 ? 1 : -1);
             }
