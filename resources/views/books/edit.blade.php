@@ -40,7 +40,7 @@
 
             <div class="form-group">
                 <label for="stock_amount">Stock Amount:</label>
-                <input type="number" name="stock_amount" id="stock_amount" class="form-control" value="0">
+                <input type="number" name="stock_amount" id="stock_amount" class="form-control" value="{{ $book->stock_amount }}">
             </div>
 
             <div class="form-group">

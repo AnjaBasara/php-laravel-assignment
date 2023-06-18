@@ -2,10 +2,25 @@
 
 namespace App\Services;
 
+use App\Http\Requests\StoreBookRequest;
+use App\Http\Requests\UpdateBookRequest;
 use App\Models\Book;
+use App\Repositories\BookRepository;
 
 class BookService
 {
+    public function __construct(private BookRepository $bookRepository)
+    {
+    }
+
+    /**
+     * @return Book[]
+     */
+    public function getBooksSorted(): array
+    {
+        return $this->bookRepository->getBooksSorted();
+    }
+
     /**
      * @param Book $movedBook
      * @param int $moveCount how many places the Book needs to be moved
@@ -38,5 +53,43 @@ class BookService
             }
             $book->save();
         }
+    }
+
+    /**
+     * Update Book logic.
+     * If the updated Book has stock amount 0, it should not be sorted.
+     * Otherwise, it should be ordered last.
+     *
+     * @param UpdateBookRequest $request
+     * @param Book $book
+     * @return void
+     */
+    public function updateBook(UpdateBookRequest $request, Book $book): void
+    {
+        if ($request->stock_amount !== $book->stock_amount) {
+            if ($request->stock_amount == 0) {
+                $book->sort_order = -1;
+            } else if ($book->stock_amount != 0) {
+                $book->sort_order = $this->bookRepository->getNextSortPlacement();
+            }
+        }
+
+        $this->bookRepository->createOrUpdateBook($request, $book);
+    }
+
+    /**
+     * Create Book logic.
+     * If the new Book has stock amount 0, it should not be sorted.
+     * Otherwise, it should be ordered last.
+     *
+     * @param StoreBookRequest $request
+     * @return void
+     */
+    public function createBook(StoreBookRequest $request): void
+    {
+        $book = new Book();
+        $book->sort_order = $request->stock_amount == 0 ? -1 : $this->bookRepository->getNextSortPlacement();
+
+        $this->bookRepository->createOrUpdateBook($request, $book);
     }
 }

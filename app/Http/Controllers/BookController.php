@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\StoreBookRequest;
+use App\Http\Requests\UpdateBookRequest;
 use App\Models\Book;
 use App\Models\Publisher;
 use App\Models\Writer;
@@ -13,15 +15,17 @@ use Illuminate\View\View;
 class BookController extends Controller
 {
 
-    public function __construct(public BookService $bookService)
+    public function __construct(private BookService $bookService)
     {
     }
 
-    public function index()
+    /**
+     * @return View
+     */
+    public function index(): View
     {
-        $books = Book::all()->sortBy(function (Book $book) {
-            return $book->sort_order > 0 ? $book->sort_order : PHP_INT_MAX;
-        })->values()->all();
+        $books = $this->bookService->getBooksSorted();
+
         return view('books.index', compact('books'));
     }
 
@@ -30,7 +34,7 @@ class BookController extends Controller
      *
      * @return View
      */
-    public function create()
+    public function create(): View
     {
         $writers = Writer::all();
         $publishers = Publisher::all();
@@ -41,35 +45,12 @@ class BookController extends Controller
     /**
      * Store a newly created book in the database.
      *
-     * @param Request $request
+     * @param StoreBookRequest $request
      * @return RedirectResponse
      */
-    public function store(Request $request)
+    public function store(StoreBookRequest $request): RedirectResponse
     {
-        $request->validate([
-            'title' => 'required|string|max:255',
-            'ISBN' => 'required|string|max:255',
-            'publication_year' => 'required|integer|min:1900|max:' . date('Y'),
-            'price' => 'required|numeric|min:0',
-            'genre' => 'required|string|max:255',
-            'stock_amount' => 'required|integer|min:0',
-            'subgenre' => 'required|string|max:255',
-            'writer_id' => 'required|exists:writers,id',
-            'publisher_id' => 'required|exists:publishers,id',
-        ]);
-
-        Book::create([
-            'title' => $request->input('title'),
-            'ISBN' => $request->input('ISBN'),
-            'publication_year' => $request->input('publication_year'),
-            'price' => $request->input('price'),
-            'genre' => $request->input('genre'),
-            'sort_order' => -1,
-            'stock_amount' => $request->input('stock_amount'),
-            'subgenre' => $request->input('subgenre'),
-            'writer_id' => $request->input('writer_id'),
-            'publisher_id' => $request->input('publisher_id'),
-        ]);
+        $this->bookService->createBook($request);
 
         return redirect()->route('books.index');
     }
@@ -80,7 +61,7 @@ class BookController extends Controller
      * @param Book $book
      * @return View
      */
-    public function edit(Book $book)
+    public function edit(Book $book): View
     {
         $writers = Writer::all();
         $publishers = Publisher::all();
@@ -91,36 +72,13 @@ class BookController extends Controller
     /**
      * Update the specified book in the database.
      *
-     * @param Request $request
+     * @param UpdateBookRequest $request
      * @param Book $book
      * @return RedirectResponse
      */
-    public function update(Request $request, Book $book)
+    public function update(UpdateBookRequest $request, Book $book): RedirectResponse
     {
-        $request->validate([
-            'title' => 'required|string|max:255',
-            'ISBN' => 'required|string|max:255',
-            'publication_year' => 'required|integer|min:1900|max:' . date('Y'),
-            'price' => 'required|numeric|min:0',
-            'genre' => 'required|string|max:255',
-            'subgenre' => 'required|string|max:255',
-            'stock_amount' => 'required|integer|min:0',
-            'writer_id' => 'required|exists:writers,id',
-            'publisher_id' => 'required|exists:publishers,id',
-        ]);
-
-        $book->update([
-            'title' => $request->input('title'),
-            'ISBN' => $request->input('ISBN'),
-            'publication_year' => $request->input('publication_year'),
-            'price' => $request->input('price'),
-            'genre' => $request->input('genre'),
-            'subgenre' => $request->input('subgenre'),
-            'sort_order' => -1,
-            'stock_amount' => $request->input('stock_amount'),
-            'writer_id' => $request->input('writer_id'),
-            'publisher_id' => $request->input('publisher_id'),
-        ]);
+        $this->bookService->updateBook($request, $book);
 
         return redirect()->route('books.index');
     }
