@@ -3,7 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Models\Writer;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\View\View;
 
 class WriterController extends Controller
 {
@@ -16,7 +18,7 @@ class WriterController extends Controller
     /**
      * Show the form for creating a new writer.
      *
-     * @return \Illuminate\View\View
+     * @return View
      */
     public function create()
     {
@@ -26,8 +28,8 @@ class WriterController extends Controller
     /**
      * Store a newly created writer in the database.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\RedirectResponse
+     * @param Request $request
+     * @return RedirectResponse
      */
     public function store(Request $request)
     {
@@ -47,8 +49,8 @@ class WriterController extends Controller
     /**
      * Show the form for editing the specified writer.
      *
-     * @param  \App\Models\Writer  $writer
-     * @return \Illuminate\View\View
+     * @param Writer $writer
+     * @return View
      */
     public function edit(Writer $writer)
     {
@@ -58,9 +60,9 @@ class WriterController extends Controller
     /**
      * Update the specified writer in the database.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\Writer  $writer
-     * @return \Illuminate\Http\RedirectResponse
+     * @param Request $request
+     * @param Writer $writer
+     * @return RedirectResponse
      */
     public function update(Request $request, Writer $writer)
     {

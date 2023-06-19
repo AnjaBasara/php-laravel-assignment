@@ -2,10 +2,11 @@
 
 namespace Database\Factories;
 
+use App\Models\Book;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
- * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\Book>
+ * @extends Factory<Book>
  */
 class BookFactory extends Factory
 {
@@ -14,7 +15,7 @@ class BookFactory extends Factory
      *
      * @return array<string, mixed>
      */
-    public function definition()
+    public function definition(): array
     {
         return [
             'title' => $this->randomTitle(),
@@ -23,10 +24,12 @@ class BookFactory extends Factory
             'price' => $this->faker->randomFloat(2, 10, 100),
             'genre' => $this->randomGenre(),
             'subgenre' => $this->randomSubGenre(),
+            'sort_order' => -1,
+            'stock_amount' => $this->faker->numberBetween(1, 100),
         ];
     }
 
-    protected function randomTitle()
+    private function randomTitle()
     {
         return $this->faker->randomElement([
             'To Kill a Mockingbird',
@@ -63,7 +66,7 @@ class BookFactory extends Factory
         ]);
     }
 
-    protected function randomGenre()
+    private function randomGenre()
     {
         return $this->faker->randomElement([
             'Fiction',
@@ -79,7 +82,7 @@ class BookFactory extends Factory
         ]);
     }
 
-    protected function randomSubGenre()
+    private function randomSubGenre()
     {
         return $this->faker->randomElement([
             'Contemporary',
