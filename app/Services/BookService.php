@@ -84,7 +84,7 @@ class BookService
         if ($request->stock_amount !== $book->stock_amount) {
             if ($request->stock_amount == 0) {
                 $book->sort_order = -1;
-            } else if ($book->stock_amount != 0) {
+            } else if ($book->stock_amount == 0) {
                 $book->sort_order = $this->bookRepository->getNextSortPlacement();
             }
         }

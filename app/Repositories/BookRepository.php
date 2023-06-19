@@ -48,7 +48,10 @@ class BookRepository
     public function getNextSortPlacement(): int
     {
         /** @var Book $lastBook */
-        $lastBook = Book::where('sort_order', '>', 0)->orderBy('sort_order')->last();
+        $lastBook = Book::where('sort_order', '>', 0)
+            ->orderBy('sort_order')
+            ->get()
+            ->last();
 
         return $lastBook->sort_order + 1;
     }
