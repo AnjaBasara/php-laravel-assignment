@@ -41,11 +41,11 @@ class BookRepository
     }
 
     /**
-     * Get next sort_order.
+     * Get the sort_order of the last sorted book incremented by one.
      *
      * @return int
      */
-    public function getNextSortPlacement(): int
+    public function getNextSortOrder(): int
     {
         /** @var Book $lastBook */
         $lastBook = Book::where('sort_order', '>', 0)
