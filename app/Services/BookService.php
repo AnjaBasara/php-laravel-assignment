@@ -50,6 +50,10 @@ class BookService
             $newPlacement = 1;
         }
 
+        if ($oldPlacement === $newPlacement) {
+            return;
+        }
+
         $arrayBetween = [$newPlacement, $oldPlacement];
         asort($arrayBetween);
 
