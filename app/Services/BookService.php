@@ -73,15 +73,16 @@ class BookService
             $sign = -1;
         } else {
             $arrayBetween = [$oldSortOrder, $newSortOrder];
-            asort($arrayBetween);
+            sort($arrayBetween);
             $sign = ($oldSortOrder - $newSortOrder) > 0 ? 1 : -1;
         }
 
         /** @var Book[] $books */
         $books = Book::whereBetween('sort_order', $arrayBetween)->orderBy('sort_order')->get();
 
-        if ($newSortOrder !== -1) {
-            $newSortOrder = (count($books) > $newSortOrder) ? $newSortOrder : ($oldSortOrder + count($books) - 1);
+        if ($newSortOrder > $oldSortOrder) {
+            $nextLastSortOrder = $this->bookRepository->getNextSortOrder();
+            $newSortOrder = ($newSortOrder >= $nextLastSortOrder) ? $nextLastSortOrder - 1 : $newSortOrder;
         }
 
         foreach ($books as $book) {
