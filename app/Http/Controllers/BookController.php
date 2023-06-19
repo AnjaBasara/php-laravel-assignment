@@ -5,6 +5,9 @@ namespace App\Http\Controllers;
 use App\Models\Book;
 use App\Models\Publisher;
 use App\Models\Writer;
+use Illuminate\Contracts\Foundation\Application;
+use Illuminate\Contracts\View\Factory;
+use Illuminate\Contracts\View\View;
 use Illuminate\Http\Request;
 
 class BookController extends Controller
@@ -107,5 +110,13 @@ class BookController extends Controller
         ]);
 
         return redirect()->route('books.index');
+    }
+
+    /**
+     * @return Application|Factory|View
+     */
+    public function recommendations()
+    {
+        // Get Book recommendations and pass them to the view
     }
 }

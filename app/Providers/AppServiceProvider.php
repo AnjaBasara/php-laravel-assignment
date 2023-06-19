@@ -2,6 +2,8 @@
 
 namespace App\Providers;
 
+use App\Models\Rating;
+use App\Observers\RatingObserver;
 use Illuminate\Support\ServiceProvider;
 
 class AppServiceProvider extends ServiceProvider
@@ -23,6 +25,6 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        //
+        Rating::observe(RatingObserver::class);
     }
 }
